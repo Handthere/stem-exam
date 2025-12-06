@@ -1,4 +1,6 @@
-import { authClient } from "lib/auth-client"; //import the auth client
+"use client"
+
+import { authClient } from "@/app/lib/auth-client"; //import the auth client
 
 const { data, error } = await authClient.signUp.email({
         email, // user email address
