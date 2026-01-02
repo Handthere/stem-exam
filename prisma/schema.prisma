@@ -28,6 +28,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  quizResults   quizResult[]
 
   @@map("user")
 }
@@ -78,4 +79,15 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model quizResult {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id])
+  score          Int
+  totalQuestions Int
+  timeSpent      Int
+  answers        Json     
+  createdAt      DateTime @default(now())
 }
