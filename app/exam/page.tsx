@@ -10,5 +10,5 @@ export default async function ExamPage() {
         redirect('/sign-in');
     };
 
-    return <ExamClient user={session.user} />;
+    return <ExamClient/>;
 };

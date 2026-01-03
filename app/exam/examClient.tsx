@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, CheckCircle, Award, Timer, AlertCircle, Loader2, Trophy, List } from 'lucide-react';
+import { useSession } from '../lib/auth-client';
 
 // --- 1. Data Soal (Bisa dipindahkan ke file terpisah atau database nanti) ---
 const quizQuestions = [
@@ -48,8 +49,10 @@ const quizQuestions = [
 ];
 
 // Menerima prop 'user' yang dikirim dari Server Component (ExamPage)
-export default function ExamClient({ user }) {
-    
+export default function ExamClient({ }) {
+    const session  = useSession();
+    const user = session.data?.user;
+
     // --- 2. State Kuis ---
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [userAnswers, setUserAnswers] = useState(Array(quizQuestions.length).fill(null));
@@ -78,7 +81,7 @@ export default function ExamClient({ user }) {
         return () => clearInterval(timerId);
     }, [showScore, timeLeft]); 
 
-    const formatTime = (seconds) => {
+    const formatTime = (seconds: number): string => {
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
@@ -87,19 +90,19 @@ export default function ExamClient({ user }) {
     // --- 4. Logika Navigasi & Jawaban ---
     const answeredCount = userAnswers.filter(answer => answer !== null).length;
 
-    const handleAnswerSelection = (answerOptionIndex) => {
-        const newAnswers = [...userAnswers];
+    const handleAnswerSelection = (answerOptionIndex: number): void => {
+        const newAnswers: (number | null)[] = [...userAnswers];
         newAnswers[currentQuestionIndex] = answerOptionIndex;
         setUserAnswers(newAnswers);
     };
 
-    const jumpToQuestion = (index) => setCurrentQuestionIndex(index);
+    const jumpToQuestion = (index:number) => setCurrentQuestionIndex(index);
     const goToNext = () => currentQuestionIndex < quizQuestions.length - 1 && setCurrentQuestionIndex(prev => prev + 1);
     const goToPrev = () => currentQuestionIndex > 0 && setCurrentQuestionIndex(prev => prev - 1);
 
     // --- 5. Logika Submit ke API ---
     const handleSubmitQuiz = async () => {
-        if (isSaving) return;
+        if (isSaving || !user) return;
         setIsSaving(true);
 
         let calculatedScore = 0;
@@ -157,7 +160,7 @@ export default function ExamClient({ user }) {
                                 <h1 className="text-lg font-black tracking-tight leading-none">STEM Preliminary</h1>
                                 {/* Menampilkan nama user dari prop */}
                                 <p className="text-[10px] text-blue-400 font-bold uppercase mt-1 tracking-widest truncate">
-                                    {user.name}
+                                    {user?.name}
                                 </p>
                             </div>
                         </div>
@@ -210,7 +213,7 @@ export default function ExamClient({ user }) {
                                     <Award className="w-16 h-16 text-yellow-600" />
                                 </div>
                                 <h2 className="text-4xl font-black text-slate-900 mb-2">Kuis Selesai!</h2>
-                                <p className="text-slate-500 mb-8 font-medium">Terima kasih, <strong>{user.name}</strong>. Hasil Anda telah disimpan.</p>
+                                <p className="text-slate-500 mb-8 font-medium">Terima kasih, <strong>{user?.name}</strong>. Hasil Anda telah disimpan.</p>
                                 
                                 <div className="bg-slate-50 rounded-2xl p-6 mb-8 border border-slate-100">
                                     <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Skor Perolehan</p>
