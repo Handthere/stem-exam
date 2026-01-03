@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { signIn } from "@/app/lib/auth-client"; // Pastikan path ini sesuai
+import { signIn } from "@/app/lib/auth-client";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
@@ -28,12 +28,10 @@ export default function SignIn() {
         password,
       });
 
-      // PENTING: Cek hasil respon di sini
       if (res.error) {
         setError(res.error.message || "Email atau password salah.");
       } else {
-        // Jika sukses, arahkan ke dashboard
-        router.push("/dashboard");
+        router.push("/start-exam");
       }
     } catch (err) {
       setError("Terjadi kesalahan jaringan.");
@@ -44,7 +42,7 @@ export default function SignIn() {
 
   return (
     <div className="mx-auto flex items-center justify-center min-h-screen">
-      <Card className="max-w-md w-full"> {/* Typo max-Sw-md diperbaiki */}
+      <Card className="max-w-md w-full">
         <CardHeader>
           <CardTitle className="text-lg md:text-xl">Sign In</CardTitle>
           <CardDescription className="text-xs md:text-sm">
@@ -52,7 +50,6 @@ export default function SignIn() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {/* 1. Bungkus input dalam form agar handleSubmit dipanggil */}
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4">
               <div className="grid gap-2">
@@ -81,7 +78,6 @@ export default function SignIn() {
                 />
               </div>
 
-              {/* Tampilkan Error jika ada */}
               {error && (
                 <div className="text-sm text-red-500 font-medium bg-red-50 p-2 rounded">
                   {error}
@@ -92,7 +88,6 @@ export default function SignIn() {
                 type="submit"
                 className="w-full"
                 disabled={loading}
-                // Hapus onClick di sini, biarkan form yang menangani submit
               >
                 {loading ? (
                   <Loader2 size={16} className="animate-spin" />
@@ -103,7 +98,6 @@ export default function SignIn() {
             </div>
           </form>
 
-          {/* Tombol Social Login (Di luar form agar tidak trigger submit) */}
           <div className={cn(
             "w-full gap-2 flex items-center mt-6",
             "justify-between flex-col"
@@ -116,7 +110,7 @@ export default function SignIn() {
                 await signIn.social(
                   {
                     provider: "google",
-                    callbackURL: "/dashboard" // Google login biasanya auto-redirect
+                    callbackURL: "/dashboard"
                   },
                   {
                     onRequest: () => setLoading(true),

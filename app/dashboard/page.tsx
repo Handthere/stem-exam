@@ -23,9 +23,9 @@ export default function DashboardPage() {
 
   return (
     <main className="max-w-md h-screen flex items-center justify-center flex-col mx-auto p-6 space-y-4 text-black">
-      <h1 className="text-2xl font-bold text-black">Dashboard</h1>
-      <p className="text-black">Welcome, {user.name || "User"}!</p>
-      <p className="text-black">Email: {user.email}</p>
+      <h1 className="text-2xl font-bold text-black">Thank You</h1>
+      <p className="text-black">Congratulations on finishing your exam, {user.name || "User"}!</p>
+      <p className="text-black">Best of luck for you and your Team!</p>
       <button
         onClick={() => signOut()}
         className="w-full bg-black text-white font-medium rounded-md px-4 py-2 hover:bg-gray-200"

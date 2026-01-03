@@ -153,11 +153,8 @@ export default function ExamClient({ user }) {
                 {!showScore && (
                     <div className="lg:w-80 bg-slate-900 text-white p-6 flex flex-col shrink-0 border-r border-slate-800">
                         <div className="flex items-center space-x-3 mb-8">
-                            <div className="p-2 bg-blue-600 rounded-lg shadow-lg shadow-blue-500/30">
-                                <Trophy className="w-6 h-6 text-white" />
-                            </div>
                             <div className="overflow-hidden">
-                                <h1 className="text-lg font-black tracking-tight leading-none">QUIZ APP</h1>
+                                <h1 className="text-lg font-black tracking-tight leading-none">STEM Preliminary</h1>
                                 {/* Menampilkan nama user dari prop */}
                                 <p className="text-[10px] text-blue-400 font-bold uppercase mt-1 tracking-widest truncate">
                                     {user.name}
@@ -199,17 +196,6 @@ export default function ExamClient({ user }) {
                                     </button>
                                 ))}
                             </div>
-                        </div>
-
-                        {/* Tombol Kirim */}
-                        <div className="mt-8 pt-6 border-t border-white/10">
-                            <button 
-                                onClick={handleSubmitQuiz}
-                                disabled={isSaving}
-                                className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white rounded-xl font-bold transition shadow-xl flex items-center justify-center space-x-2 active:scale-95"
-                            >
-                                {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <span>KIRIM JAWABAN</span>}
-                            </button>
                         </div>
                     </div>
                 )}
